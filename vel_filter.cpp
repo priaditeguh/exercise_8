@@ -31,7 +31,7 @@ void twistMessageFilter(const geometry_msgs::Twist& msg)
 	ROS_INFO_STREAM_THROTTLE(5.0,"Total dropped messages vel_filter: " << total_msg);
 }
 
-bool toogle_fitler(std_srvs::Empty::Request &req, std_srvs::Empty::Response &resp)
+bool toggle_filter(std_srvs::Empty::Request &req, std_srvs::Empty::Response &resp)
 {
 	enable_filter = !enable_filter;
 
@@ -47,7 +47,7 @@ int main (int argc, char **argv)
 	ros::NodeHandle nh;
 
 	// Register our service with the master
-	ros::ServiceServer server = nh.advertiseService("toogle_fitler",&toogle_fitler);
+	ros::ServiceServer server = nh.advertiseService("toggle_filter",&toggle_filter);
 
 	// Create a publisher pointer.
 	pub = new ros::Publisher(nh.advertise<geometry_msgs::Twist>("turtle1/cmd_vel_filtered",1000));
@@ -57,9 +57,6 @@ int main (int argc, char **argv)
 
 	const std::string PARAM_NAME = "~max_ang_vel";
 	// const std::string PARAM_NAME = "/max_ang_vel";
-
-	// Let ROS take over .
-	// ros::spin();
 
 	// Loop at 2Hz until the node is shut down.
 	ros::Rate rate(2);
